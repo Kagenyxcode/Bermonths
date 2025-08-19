@@ -3,165 +3,197 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Click Me When You're Feeling Sad 💜</title>
+  <title>Click Me When You're Feeling Sad</title>
   <style>
     body {
-      font-family: "Georgia", cursive, sans-serif;
-      background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      background-color: #f3e8ff;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      flex-direction: column;
+      margin: 0;
       text-align: center;
+      color: #4b0082;
+      flex-direction: column;
       overflow: hidden;
-      transition: background 1s ease-in-out;
     }
     h1 {
-      color: #6a1b9a;
-      text-shadow: 1px 1px 3px #fff;
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      margin-bottom: 20px;
     }
     button {
-      padding: 12px 24px;
-      font-size: 18px;
-      border: none;
-      border-radius: 12px;
-      background-color: #9c27b0;
+      background-color: #c084fc;
       color: white;
+      border: none;
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 18px;
+      border-radius: 12px;
       cursor: pointer;
       transition: 0.3s;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
     button:hover {
-      background-color: #6a1b9a;
+      background-color: #a855f7;
+      transform: scale(1.05);
+    }
+    #quote {
+      margin-top: 20px;
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      max-width: 80%;
+    }
+    #gameArea {
+      margin-top: 20px;
+      width: 90%;
+      height: 50vh;
+      background: #e9d5ff;
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      display: none;
+    }
+    .heart {
+      position: absolute;
+      font-size: 30px;
+      pointer-events: none;
     }
     #message {
       margin-top: 20px;
-      font-size: 22px;
-      display: none;
-      animation: fadeIn 1.5s ease-in-out;
-      transition: color 1s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    /* Floating effects */
-    .float {
-      position: absolute;
-      animation: floatUp 4s ease-in forwards;
-      pointer-events: none;
-    }
-    @keyframes floatUp {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
-    }
-
-    /* Big surprise style */
-    .big-surprise {
-      font-size: 28px;
+      font-size: 1.2rem;
       font-weight: bold;
-      color: #8e24aa;
-      text-shadow: 2px 2px 5px white;
-      animation: glow 1.5s ease-in-out infinite alternate;
-    }
-    @keyframes glow {
-      from { text-shadow: 0 0 5px #ba68c8, 0 0 10px #ce93d8; }
-      to { text-shadow: 0 0 20px #e1bee7, 0 0 30px #f3e5f5; }
+      color: #9333ea;
     }
   </style>
 </head>
 <body>
-
   <h1>Click Me When You're Feeling Sad 💜</h1>
-  <button onclick="showMessage()">Click Me 💜</button>
-  <p id="message"></p>
+
+  <!-- Buttons -->
+  <button onclick="surprise()">💌 Click Me</button>
+  <button onclick="startGame()">🎮 Play Heart Catch</button>
+
+  <div id="quote"></div>
+  <div id="gameArea"></div>
+  <div id="message"></div>
 
   <script>
-    const allMessages = [
-      "You’re the best thing that ever happened to me 💕",
-      "I love you more than words can say 💜",
-      "Forever and always, it’s you 💖",
-      "You’re my favorite person in the whole universe 🌍✨",
-      "No matter what happens, I’ll always love you 😘",
-      "My heart is happiest when I think of you 💞",
-      "It’s okay to have bad days 🌧️, just remember the sun always comes back ☀️",
-      "You are stronger than you think 💪",
-      "Breathe in courage, breathe out fear 🌬️💜",
-      "Even the darkest night will end, and the sun will rise 🌅",
-      "Smile, love — it looks beautiful on you 😊",
-      "Whenever you feel alone, remember I’m always with you 🤗",
-      "You’re capable of amazing things ✨",
-      "One small positive thought can change your whole day 🌸"
+    // 💌 Love Quotes
+    const quotes = [
+      "You make my world brighter every day 💜",
+      "I love you more than words can ever say 💕",
+      "You're my sunshine on the cloudiest days ☀️",
+      "No matter what, I’ll always be by your side 💖",
+      "You are the reason my heart smiles 🌸"
     ];
 
-    let unusedMessages = [...allMessages];
-    let clickCount = 0;
-
-    const gradients = [
-      "linear-gradient(135deg, #f3e5f5, #e1bee7)",
-      "linear-gradient(135deg, #d1c4e9, #b39ddb)",
-      "linear-gradient(135deg, #e0bbf3, #dba2ef)",
-      "linear-gradient(135deg, #cbb6e4, #a68edb)",
-      "linear-gradient(135deg, #f8bbd0, #e1bee7)",
-      "linear-gradient(135deg, #d7c1f0, #cba6f7)",
-      "linear-gradient(135deg, #f3d1f4, #e1bee7)",
-      "linear-gradient(135deg, #e0c3fc, #8ec5fc)"
+    // 🌸 Cheer-up Messages
+    const cheers = [
+      "Everything will be okay, you’re stronger than you think 🌈",
+      "Even the darkest nights end with a sunrise ☀️",
+      "You’ve got this, I believe in you 💪",
+      "Take a deep breath, brighter days are coming 💕",
+      "You’re never alone, I’m always here for you 💜"
     ];
-    let gradientIndex = 0;
 
-    const textColors = [
-      "#6a1b9a","#8e24aa","#ab47bc","#7b1fa2",
-      "#9c27b0","#ba68c8","#ce93d8","#b39ddb"
-    ];
-    let textColorIndex = 0;
+    // 🎮 Game Variables
+    let gameScore = 0;
+    let heartInterval, timerTimeout;
 
-    function showMessage() {
-      clickCount++;
-
-      const messageElement = document.getElementById("message");
-
-      // Every 10 clicks -> big surprise
-      if (clickCount % 10 === 0) {
-        messageElement.innerText = "💜 BIG SURPRISE: I Love You More Than Everything 💜";
-        messageElement.classList.add("big-surprise");
-        messageElement.style.display = "block";
+    // Show either a love quote or cheer-up message
+    function surprise() {
+      const random = Math.random();
+      if (random < 0.5) {
+        showQuote();
       } else {
-        if (unusedMessages.length === 0) {
-          unusedMessages = [...allMessages];
-        }
-
-        const randomIndex = Math.floor(Math.random() * unusedMessages.length);
-        const message = unusedMessages.splice(randomIndex, 1)[0];
-
-        messageElement.innerText = message;
-        messageElement.classList.remove("big-surprise");
-        messageElement.style.display = "block";
+        showCheer();
       }
-
-      document.body.style.background = gradients[gradientIndex];
-      gradientIndex = (gradientIndex + 1) % gradients.length;
-
-      messageElement.style.color = textColors[textColorIndex];
-      textColorIndex = (textColorIndex + 1) % textColors.length;
-
-      createFloatingEffects();
     }
 
-    function createFloatingEffects() {
-      for (let i = 0; i < 6; i++) {
-        const floaty = document.createElement("div");
-        floaty.classList.add("float");
-        floaty.innerText = Math.random() > 0.5 ? "💜" : "✨";
-        floaty.style.left = Math.random() * window.innerWidth + "px";
-        floaty.style.bottom = "0px";
-        floaty.style.fontSize = (20 + Math.random() * 20) + "px";
-        document.body.appendChild(floaty);
-        setTimeout(() => floaty.remove(), 4000);
-      }
+    // Show a random love quote
+    function showQuote() {
+      document.getElementById("gameArea").style.display = "none";
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      document.getElementById("quote").textContent = quotes[randomIndex];
+      document.getElementById("message").textContent = "";
+    }
+
+    // Show a random cheer-up message
+    function showCheer() {
+      document.getElementById("gameArea").style.display = "none";
+      const randomIndex = Math.floor(Math.random() * cheers.length);
+      document.getElementById("quote").textContent = cheers[randomIndex];
+      document.getElementById("message").textContent = "";
+    }
+
+    // 🌸 Automatic Floating Hearts
+    function floatingHearts() {
+      const heart = document.createElement("div");
+      heart.textContent = "💜";
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.top = window.innerHeight + "px";
+      document.body.appendChild(heart);
+
+      let rise = setInterval(() => {
+        let currentTop = parseInt(heart.style.top);
+        if (currentTop < -50) {
+          clearInterval(rise);
+          heart.remove();
+        } else {
+          heart.style.top = currentTop - 2 + "px";
+        }
+      }, 30);
+    }
+    setInterval(floatingHearts, 1500); // spawn hearts every 1.5s
+
+    // 🎮 Start the 10-second heart-catching game
+    function startGame() {
+      const gameArea = document.getElementById("gameArea");
+      const messageDiv = document.getElementById("message");
+      const quoteDiv = document.getElementById("quote");
+      quoteDiv.textContent = "";
+      messageDiv.textContent = "Catch as many hearts as you can in 10 seconds! 💜";
+      gameArea.style.display = "block";
+      gameArea.innerHTML = "";
+      gameScore = 0;
+
+      heartInterval = setInterval(dropHeart, 800);
+      timerTimeout = setTimeout(endGame, 10000);
+    }
+
+    function dropHeart() {
+      const gameArea = document.getElementById("gameArea");
+      const heart = document.createElement("div");
+      heart.textContent = "💜";
+      heart.style.position = "absolute";
+      heart.style.left = Math.random() * (gameArea.offsetWidth - 30) + "px";
+      heart.style.top = "0px";
+      heart.style.fontSize = "30px";
+      heart.style.cursor = "pointer";
+      gameArea.appendChild(heart);
+
+      let fall = setInterval(() => {
+        let currentTop = parseInt(heart.style.top);
+        if (currentTop > gameArea.offsetHeight - 40) {
+          clearInterval(fall);
+          heart.remove();
+        } else {
+          heart.style.top = currentTop + 3 + "px";
+        }
+      }, 30);
+
+      heart.addEventListener("click", () => {
+        gameScore++;
+        clearInterval(fall);
+        heart.remove();
+      });
+    }
+
+    function endGame() {
+      clearInterval(heartInterval);
+      document.getElementById("gameArea").innerHTML = "";
+      document.getElementById("message").textContent = `Time's up! You caught ${gameScore} hearts 💜❤️✨`;
     }
   </script>
-
 </body>
 </html>
